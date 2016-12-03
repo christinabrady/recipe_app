@@ -1,4 +1,4 @@
-setwd("Documents/shiny_apps/recipe_app/")
+# setwd("Documents/shiny_apps/recipe_app/")
 library(jsonlite)
 
 flnmes <- list.files("./recipes/")
