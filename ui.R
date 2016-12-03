@@ -33,19 +33,19 @@ shinyUI(navbarPage("Recipes", theme = "bootstrap.css",
 				actionButton("save", "Save")
 				)
 			)
-		),
-		tabPanel("Modify recipes",
-			fluidRow(
-				column(width = 3),
-				column(width = 8,
-					selectInput("revr", "Which recipe would you like to revise?", choices = names),
-					textInput("revname", "Name"),
-					textareaInput("revingred","Ingredients", "", rows = 10, cols = 35),
-					br(),
-					textareaInput("revinstru","Instructions", "", rows = 10, cols = 35),
-					selectizeInput("revtag", "Tags", choices = NULL, options = list(create = TRUE), multiple = TRUE),
-					actionButton("updt", "Update")
-					)
-				)
-			)
+		)
+		# tabPanel("Modify recipes",
+		# 	fluidRow(
+		# 		column(width = 3),
+		# 		column(width = 8,
+		# 			selectInput("revr", "Which recipe would you like to revise?", choices = names),
+		# 			textInput("revname", "Name"),
+		# 			textareaInput("revingred","Ingredients", "", rows = 10, cols = 35),
+		# 			br(),
+		# 			textareaInput("revinstru","Instructions", "", rows = 10, cols = 35),
+		# 			selectizeInput("revtag", "Tags", choices = NULL, options = list(create = TRUE), multiple = TRUE),
+		# 			actionButton("updt", "Update")
+		# 			)
+		# 		)
+		# 	)
 	))
