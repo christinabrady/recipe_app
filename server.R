@@ -1,7 +1,7 @@
 ## server
 
 function(session, input, output){
-  updateSelectizeInput(session, 'getinstr', server = TRUE, choices = names)
+  updateSelectizeInput(session, 'getinstr', server = TRUE, choices = sort(names))
   updateSelectizeInput(session, 'tagsearch', server = TRUE, choices = tgs)
   updateSelectizeInput(session, 'rtag', server = TRUE, choices = tgs)
 
