@@ -1,6 +1,7 @@
 library(mongolite)
 library(jsonlite)
 m  <- mongo(collection = "recipes")
+sch <- mongo(collection = "searches")
 names <- m$distinct("name")
 tgs <- m$distinct("tags")
 # tags <- tags[!is.na(tags)]
@@ -32,4 +33,12 @@ createTabBox <- function(dat, n){
       HTML(paste(dat$instructions[[n]], collapse = "<br/>"))
       )
   )
+}
+
+createSearchList <- function(type, term){
+  searchlist <- list()
+  searchlist[["search_type"]] <- type
+  searchlist[["search_term"]] <- term
+  searchlist[["search_date"]] <- as.character(Sys.Date())
+  searchlist
 }
