@@ -30,22 +30,25 @@ shinyUI(navbarPage("Recipes", theme = "bootstrap.css",
 				br(),
 				textareaInput("rinstru","Copy instructions here.", "", rows = 10, cols = 35),
 				selectizeInput("rtag", "Would you like to add any tags?", choices = NULL, options = list(create = TRUE), multiple = TRUE),
+				tags$head(tags$script(HTML('Shiny.addCustomMessageHandler("jsCode",function(message) {eval(message.value);});'))),
 				actionButton("save", "Save")
 				)
 			)
-		)
-		# tabPanel("Modify recipes",
-		# 	fluidRow(
-		# 		column(width = 3),
-		# 		column(width = 8,
-		# 			selectInput("revr", "Which recipe would you like to revise?", choices = names),
-		# 			textInput("revname", "Name"),
-		# 			textareaInput("revingred","Ingredients", "", rows = 10, cols = 35),
-		# 			br(),
-		# 			textareaInput("revinstru","Instructions", "", rows = 10, cols = 35),
-		# 			selectizeInput("revtag", "Tags", choices = NULL, options = list(create = TRUE), multiple = TRUE),
-		# 			actionButton("updt", "Update")
-		# 			)
-		# 		)
-		# 	)
+		),
+		tabPanel("Modify recipes",
+			fluidRow(
+				column(width = 3),
+				column(width = 8,
+					selectInput("revr", "Which recipe would you like to revise?", choices = names),
+					actionButton("go", "Find"),
+					uiOutput("revisename"),
+					uiOutput("reviseingreds"),
+					br(),
+					uiOutput("reviseinstrs"),
+					uiOutput("revisetags"),
+					tags$head(tags$script(HTML('Shiny.addCustomMessageHandler("jsCode",function(message) {eval(message.value);});'))),
+					actionButton("updt", "Update")
+					)
+				)
+			)
 	))
