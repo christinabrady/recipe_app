@@ -15,9 +15,8 @@ textareaInput <- function(id, label, value, rows=20, cols=35, class="form-contro
 ingredientformat <- function(df){
   if(nrow(df) != 0){
     sprintf('
-    <p style="padding-center: 100px;"><span style="color: #000000;"><strong>%s</strong></span></p>
     <p style="padding-center: 100px;"><span style="color: #000000;">%s</span></p>
-    ', df$name, paste(unlist(df$ingredients), collapse = "<br/>")
+    ', paste(unlist(df$ingredients), collapse = "<br/>")
     )
   } else{
     '<p style="padding-center: 100px;"><span style="color: #000000;"><strong></strong></span></p>'

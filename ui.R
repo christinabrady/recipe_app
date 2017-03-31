@@ -39,11 +39,12 @@ shinyUI(navbarPage("Recipes", theme = "bootstrap.css",
 				column(width = 3),
 				column(width = 8,
 					selectInput("revr", "Which recipe would you like to revise?", choices = names),
-					textInput("revname", "Name"),
-					textareaInput("revingred","Ingredients", "", rows = 10, cols = 35),
+					actionButton("go", "Find"),
+					uiOutput("revisename"),
+					uiOutput("reviseingreds"),
 					br(),
-					textareaInput("revinstru","Instructions", "", rows = 10, cols = 35),
-					selectizeInput("revtag", "Tags", choices = NULL, options = list(create = TRUE), multiple = TRUE),
+					uiOutput("reviseinstrs"),
+					uiOutput("revisetags"),
 					actionButton("updt", "Update")
 					)
 				)
