@@ -30,6 +30,7 @@ shinyUI(navbarPage("Recipes", theme = "bootstrap.css",
 				br(),
 				textareaInput("rinstru","Copy instructions here.", "", rows = 10, cols = 35),
 				selectizeInput("rtag", "Would you like to add any tags?", choices = NULL, options = list(create = TRUE), multiple = TRUE),
+				tags$head(tags$script(HTML('Shiny.addCustomMessageHandler("jsCode",function(message) {eval(message.value);});'))),
 				actionButton("save", "Save")
 				)
 			)
@@ -45,6 +46,7 @@ shinyUI(navbarPage("Recipes", theme = "bootstrap.css",
 					br(),
 					uiOutput("reviseinstrs"),
 					uiOutput("revisetags"),
+					tags$head(tags$script(HTML('Shiny.addCustomMessageHandler("jsCode",function(message) {eval(message.value);});'))),
 					actionButton("updt", "Update")
 					)
 				)

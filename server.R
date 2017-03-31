@@ -45,6 +45,8 @@ function(session, input, output){
     newrecipe[["instructions"]] <- sapply(strsplit(input$rinstru, "\\n"), trimws)
     newrecipe[["tags"]] <- sapply(strsplit(input$rtag, "\\n"), trimws)
     print(toJSON(newrecipe))
+    js_string <- 'alert("Thanks for the new recipe! I look forward to using it!");'
+    session$sendCustomMessage(type='jsCode', list(value = js_string))
     m$insert(toJSON(newrecipe))
     })
 
@@ -76,6 +78,8 @@ function(session, input, output){
     revrec[["instructions"]] <- sapply(strsplit(input$revinstru, "\\n"), trimws)
     revrec[["tags"]] <- sapply(strsplit(input$revtag, "\\n"), trimws)
     print(toJSON(revrec))
+    js_string <- 'alert("Thanks for the update!");'
+    session$sendCustomMessage(type='jsCode', list(value = js_string))
     m$update(query = paste0('{"_id": { "$oid" : "', mongoid, '" } }'),
              sprintf(update = '{ "$set" : %s }', toJSON(revrec)))
     })
