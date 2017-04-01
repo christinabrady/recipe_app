@@ -1,12 +1,13 @@
 ## server
 
 function(session, input, output){
-  updateSelectizeInput(session, 'getinstr', server = TRUE, choices = names)
+  updateSelectizeInput(session, 'getinstr', server = TRUE, choices = sort(names))
   updateSelectizeInput(session, 'tagsearch', server = TRUE, choices = tgs)
   updateSelectizeInput(session, 'rtag', server = TRUE, choices = tgs)
 
   observeEvent(input$sinsubmit, {
       dat <- m$find(sprintf('{"$text": {"$search":"\\"%s\\""}}', tolower(input$ingred)))
+      sch$insert(toJSON(createSearchList("ingredient", tolower(input$ingred))))
       for(i in 1:nrow(dat)){
         insertUI(
           selector = "#placeholder",
@@ -17,6 +18,7 @@ function(session, input, output){
   })
   observeEvent(input$stagsubmit, {
     dat <- m$find(sprintf('{"tags":"%s"}', input$tagsearch))
+    sch$insert(toJSON(createSearchList("tag", tolower(input$tagsearch))))
     for(i in 1:nrow(dat)){
       insertUI(
         selector = "#placeholder",
@@ -28,6 +30,7 @@ function(session, input, output){
 
   observeEvent(input$snamesubmit, {
     dat <- m$find(sprintf('{"name":"%s"}', input$getinstr))
+    sch$insert(toJSON(createSearchList("recipe_name", tolower(input$getinstr))))
     for(i in 1:nrow(dat)){
       insertUI(
         selector = "#placeholder",
@@ -44,6 +47,7 @@ function(session, input, output){
     newrecipe[["ingredients"]] <- sapply(strsplit(input$ringred, "\\n"), trimws)
     newrecipe[["instructions"]] <- sapply(strsplit(input$rinstru, "\\n"), trimws)
     newrecipe[["tags"]] <- sapply(strsplit(input$rtag, "\\n"), trimws)
+    # newrecipe[["date_added"]] <- as.character(Sys.Date())
     print(toJSON(newrecipe))
     js_string <- 'alert("Thanks for the new recipe! I look forward to using it!");'
     session$sendCustomMessage(type='jsCode', list(value = js_string))

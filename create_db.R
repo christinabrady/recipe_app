@@ -23,7 +23,6 @@ starters <- lapply(flnmes, recipesToJSON)
 m <- mongo(collection = "recipes")
 lapply(starters, function(str) m$insert(str))
 
-
 #### create a text index in the mongo console:
 db.recipes.createIndex({ ingredients: "text"})
 
