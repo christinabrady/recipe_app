@@ -1,10 +1,10 @@
-library(mongolite)
-library(jsonlite)
-m  <- mongo(collection = "recipes")
-sch <- mongo(collection = "searches")
-names <- m$distinct("name")
-tgs <- m$distinct("tags")
-# tags <- tags[!is.na(tags)]
+library(elastic)
+library(RODBC)
+dbsch <- odbcConnect("recipe_search")
+connect()
+
+tag_list <- ""
+recipe_list <- ""
 
 textareaInput <- function(id, label, value, rows=20, cols=35, class="form-control"){
   tags$div(
@@ -35,10 +35,3 @@ createTabBox <- function(dat, n){
   )
 }
 
-createSearchList <- function(type, term){
-  searchlist <- list()
-  searchlist[["search_type"]] <- type
-  searchlist[["search_term"]] <- term
-  searchlist[["search_date"]] <- as.character(Sys.Date())
-  searchlist
-}

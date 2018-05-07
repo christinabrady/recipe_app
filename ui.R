@@ -7,14 +7,12 @@ library(shinydashboard)
 
 shinyUI(navbarPage("Recipes", theme = "bootstrap.css",
 	tabPanel("Search Recipies",
+		fluidRow(), 
+		fluidRow(),
 		fluidRow(
-			column(2,
-				textInput("ingred", label = "What ingredient do you want to search for?"),
-				actionButton("sinsubmit", "GO!"),
-				selectizeInput("tagsearch", "Which tag do you want to look for?", choices = NULL, options = list(create = TRUE)),
-				actionButton("stagsubmit", "GO!"),
-				selectizeInput("getinstr", "Which recipe do you want to find?", choices = NULL, options = list(create = TRUE)),
-				actionButton("snamesubmit", "GO!")
+			column(2,offset = 5
+				textInput("es_search", label = "What do you want to search for?"),
+				actionButton("sinsubmit", "GO!")
 			),
 			column(8,
 				tags$div(id = "placeholder")
