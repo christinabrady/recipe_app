@@ -7,22 +7,27 @@ library(shinydashboard)
 
 shinyUI(navbarPage("Recipes", theme = "bootstrap.css",
 	tabPanel("Search Recipies",
-		fluidRow(), 
+		fluidRow(),
 		fluidRow(),
 		fluidRow(
-			column(2,offset = 5
+			column(3,
 				textInput("es_search", label = "What do you want to search for?"),
 				actionButton("sinsubmit", "GO!")
 			),
 			column(8,
 				tags$div(id = "placeholder")
 			)
-			)
 		),
+		fluidRow(
+			column(3,
+				selectizeInput("tag_search", "What tag would you like to browse?", choices = NULL, options = list(create = TRUE)),
+				actionButton("taginput", "GO!")
+			)
+		)
+	),
 	tabPanel("Add recipes",
 		fluidRow(
-			column(width = 3),
-			column(width = 8,
+			column(width = 8, offset = 4,
 				textInput("rname", "What is the name of your recipe?"),
 				textareaInput("ringred","Copy ingredients here", "", rows = 10, cols = 35),
 				br(),
@@ -35,9 +40,8 @@ shinyUI(navbarPage("Recipes", theme = "bootstrap.css",
 		),
 		tabPanel("Modify recipes",
 			fluidRow(
-				column(width = 3),
-				column(width = 8,
-					selectInput("revr", "Which recipe would you like to revise?", choices = names),
+				column(width = 8, offset = 4,
+					selectInput("revr", "Which recipe would you like to revise?", choices = recipe_names),
 					actionButton("go", "Find"),
 					uiOutput("revisename"),
 					uiOutput("reviseingreds"),

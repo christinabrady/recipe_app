@@ -36,5 +36,37 @@
 # m$find('{"ingredients":{"$in":"black beans"}}')
 
 #### clean duplicates and add date_added
-m$update('{}', '{"$set":{"date_added": "2017-03-01"}}', multiple = TRUE)
-allrec <- m$find('{}')
+# m$update('{}', '{"$set":{"date_added": "2017-03-01"}}', multiple = TRUE)
+# allrec <- m$find('{}')
+
+dpath <- "~/Documents/codebase/shiny_apps/recipe_app"
+fls <- list.files(dpath, pattern = ".csv")
+messy <- read.csv(sprintf("%s/%s", dpath, fls), stringsAsFactors = F)
+
+recipes <- apply(messy, 1, function(rr){
+  nm <-  rr['name']
+  ingred <- strsplit(rr['ingredients'], ",|\\n")
+  instruct <- strsplit(rr['instructions'], "\\n")
+  tags <- strsplit(rr['tags'], "\\n")
+  return(c(nm, ingred, instruct, tags))
+})
+
+docs_bulk(recipes, index = "recipes", es_ids = T)
+
+# curl -X PUT "localhost:9200/recipes" -H 'Content-Type: application/json' -d'
+#  {
+#    "mappings": {
+#      "_doc": {
+#        "properties": {
+#          "tags": {
+#            "type": "text",
+#            "fields": {
+#              "keyword": {
+#                "type": "keyword"
+#              }
+#            }
+#          }
+#        }
+#      }
+#    }
+#  }'

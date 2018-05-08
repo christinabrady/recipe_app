@@ -1,44 +1,37 @@
 ## server
 
 function(session, input, output){
-  updateSelectizeInput(session, 'getinstr', server = TRUE, choices = sort(names))
-  updateSelectizeInput(session, 'tagsearch', server = TRUE, choices = tgs)
-  updateSelectizeInput(session, 'rtag', server = TRUE, choices = tgs)
+  updateSelectizeInput(session, 'tag_search', server = TRUE, choices = tag_names)
+  updateSelectizeInput(session, 'rtag', server = TRUE, choices = tag_names)
 
   observeEvent(input$sinsubmit, {
-      dat <- m$find(sprintf('{"$text": {"$search":"\\"%s\\""}}', tolower(input$ingred)))
-      sch$insert(toJSON(createSearchList("ingredient", tolower(input$ingred))))
-      for(i in 1:nrow(dat)){
+      results <- Search(index = "recipes", q = input$es_search)$hits$hits
+      print(results)
+      for(i in 1:length(results)){
         insertUI(
           selector = "#placeholder",
           where = "afterEnd",
-          ui = createTabBox(dat, i)
+          ui = createTabBox(results, i)
         )
       }
   })
-  observeEvent(input$stagsubmit, {
-    dat <- m$find(sprintf('{"tags":"%s"}', input$tagsearch))
-    sch$insert(toJSON(createSearchList("tag", tolower(input$tagsearch))))
-    for(i in 1:nrow(dat)){
+  observeEvent(input$taginput, {
+    tag_search_qry <- sprintf('{
+      "query": {
+         "match": { "tags": "%s" }
+      }
+    }', input$tag_search)
+
+    tag_results <- Search(index = "recipes", body = tag_search_qry)$hits$hits
+    for(i in 1:length(tag_results)){
       insertUI(
         selector = "#placeholder",
         where = "afterEnd",
-        ui = createTabBox(dat, i)
+        ui = createTabBox(tag_results, i)
       )
     }
   })
 
-  observeEvent(input$snamesubmit, {
-    dat <- m$find(sprintf('{"name":"%s"}', input$getinstr))
-    sch$insert(toJSON(createSearchList("recipe_name", tolower(input$getinstr))))
-    for(i in 1:nrow(dat)){
-      insertUI(
-        selector = "#placeholder",
-        where = "afterEnd",
-        ui = createTabBox(dat, i)
-      )
-    }
-  })
 
   #### saving new recipes
   observeEvent(input$save, {
@@ -48,10 +41,9 @@ function(session, input, output){
     newrecipe[["instructions"]] <- sapply(strsplit(input$rinstru, "\\n"), trimws)
     newrecipe[["tags"]] <- sapply(strsplit(input$rtag, "\\n"), trimws)
     newrecipe[["date_added"]] <- as.character(Sys.Date())
-    print(toJSON(newrecipe))
     js_string <- 'alert("Thanks for the new recipe! I look forward to using it!");'
     session$sendCustomMessage(type='jsCode', list(value = js_string))
-    m$insert(toJSON(newrecipe))
+    docs_create(index = "recipes", type = "recipes", body = newrecipe, id = paste(input$rname, Sys.Date(), collapse = ""))
     })
 
   #### revise recipes
@@ -87,6 +79,5 @@ function(session, input, output){
     m$update(query = paste0('{"_id": { "$oid" : "', mongoid, '" } }'),
              sprintf(update = '{ "$set" : %s }', toJSON(revrec)))
     })
-
 
   }
