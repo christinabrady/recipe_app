@@ -1,5 +1,5 @@
 library(elastic)
-connect(es_host = "192.168.1.6")
+connect(es_host = "localhost")
 
 distinct_tags_qry <- '{
     "aggs" : {

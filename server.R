@@ -37,9 +37,9 @@ function(session, input, output){
   observeEvent(input$save, {
     newrecipe <- list()
     newrecipe[["name"]] <- input$rname
-    newrecipe[["ingredients"]] <- sapply(strsplit(input$ringred, "\\n"), trimws)
-    newrecipe[["instructions"]] <- sapply(strsplit(input$rinstru, "\\n"), trimws)
-    newrecipe[["tags"]] <- sapply(strsplit(input$rtag, "\\n"), trimws)
+    newrecipe[["ingredients"]] <- sapply(strsplit(input$ringred, "\\n")[[1]], trimws)
+    newrecipe[["instructions"]] <- sapply(strsplit(input$rinstru, "\\n")[[1]], trimws)
+    newrecipe[["tags"]] <- sapply(strsplit(input$rtag, "\\n")[[1]], trimws)
     newrecipe[["date_added"]] <- as.character(Sys.Date())
     js_string <- 'alert("Thanks for the new recipe! I look forward to using it!");'
     session$sendCustomMessage(type='jsCode', list(value = js_string))
